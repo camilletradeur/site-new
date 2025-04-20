@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camille-Tech - Votre Boutique Informatique</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Animations de base */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Styles des sections avec animations */
+        .header-content {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        nav {
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        nav ul li a {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav ul li a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: #1877f2;
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover:after {
+            width: 100%;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: #1565c0;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: #1a237e;
+        }
+
+        .categories {
+            padding: 4rem 2rem;
+            background: #f5f5f5;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .category-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .category-card:hover .category-image {
+            transform: scale(1.1);
+        }
+
+        .category-content {
+            padding: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            color: #1565c0;
+            margin-bottom: 1rem;
+        }
+
+        .category-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .features {
+            padding: 4rem 2rem;
+            background: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 15px;
+            background: #f5f5f5;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #1565c0;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: #666;
+        }
+
+        .advantages {
+            padding: 4rem 2rem;
+            background: #f8f9fa;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .advantages.visible {
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .advantages h2 {
+            text-align: center;
+            color: #1565c0;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .advantages h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: #1565c0;
+        }
+
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .advantage-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .advantage-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #1a237e, #1565c0);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .advantage-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .advantage-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .advantage-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .advantage-card h3 {
+            color: #1565c0;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 2.5rem;
+        }
+
+        .advantage-card h3::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1.8rem;
+            height: 1.8rem;
+            background: #e3f2fd;
+            color: #1565c0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .advantage-card p {
+            color: #666;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .advantages h2 {
+                font-size: 2rem;
+            }
+
+            .advantages-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .advantage-card {
+                padding: 1.5rem;
+            }
+        }
+
+        .contact-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .contact-section.visible {
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .contact-section h2 {
+            text-align: center;
+            color: #1565c0;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .contact-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: #1565c0;
+        }
+
+        .contact-info {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .contact-info p::before {
+            content: '';
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e3f2fd;
+            color: #1565c0;
+            font-size: 1.2rem;
+        }
+
+        .contact-info p:nth-child(1)::before {
+            content: '✉';
+        }
+
+        .contact-info p:nth-child(2)::before {
+            content: '📞';
+        }
+
+        .contact-info p:nth-child(3)::before {
+            content: '📍';
+        }
+
+        .contact-info.visible p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .contact-info p:nth-child(1) {
+            transition-delay: 0.2s;
+        }
+
+        .contact-info p:nth-child(2) {
+            transition-delay: 0.4s;
+        }
+
+        .contact-info p:nth-child(3) {
+            transition-delay: 0.6s;
+        }
+
+        .contact-info p:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background: #e3f2fd;
+        }
+
+        @media (max-width: 768px) {
+            .contact-section h2 {
+                font-size: 2rem;
+            }
+
+            .contact-info {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+            }
+
+            .contact-info p {
+                padding: 0.8rem;
+            }
+        }
+
+        footer {
+            background: linear-gradient(to right, #1a237e, #1565c0);
+            padding: 0.8rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+            margin: 0.3rem 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p:first-child {
+            font-weight: 500;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+
+        footer p:nth-child(2) {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        footer p:last-child {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Animation des boutons */
+        .auth-buttons a {
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 3px;
+            position: relative;
+            overflow: hidden;
+            font-size: 0.85rem;
+        }
+
+        .auth-buttons a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: white;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        .auth-buttons a:hover:after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .btn-login {
+            background: transparent;
+            border: 1px solid white;
+        }
+
+        .btn-signup {
+            background: #1877f2;
+            border: 1px solid #1877f2;
+            margin-left: 10px;
+        }
+
+        .auth-buttons a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Effet de particules */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255,255,255,0.5);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* Style du logo */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-svg {
+            width: 32px;
+            height: 32px;
+            animation: logoSpin 20s linear infinite;
+        }
+
+        @keyframes logoSpin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .logo-text {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin: 0;
+        }
+
+        .logo-text span {
+            color: #1877f2;
+        }
+
+        /* Animation du logo au survol */
+        .logo-container:hover .logo-svg {
+            animation-duration: 2s;
+        }
+
+        .logo-container:hover .logo-text {
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        header {
+            background: linear-gradient(to right, #1a237e, #1565c0);
+            color: white;
+            padding: 0.4rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content h1 {
+            font-size: 1.5rem;
+            margin: 0;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-content h1::before {
+            display: none;
+        }
+
+        .cart-icon {
+            position: relative;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .cart-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        #cart-count {
+            background: #ff4081;
+            color: white;
+            border-radius: 50%;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.8rem;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            min-width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        nav {
+            background: white;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #1565c0;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #1565c0;
+        }
+
+        nav a:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        nav a.active {
+            color: #1565c0;
+            background: rgba(21, 101, 192, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 0.5rem;
+            }
+            
+            nav a {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Style pour la section des collaborateurs */
+        .collaborators-section {
+            padding: 4rem 2rem;
+            background: #f8f9fa;
+        }
+
+        .collaborators-section h2 {
+            text-align: center;
+            color: #1565c0;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+            position: relative;
+        }
+
+        .collaborators-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: #1565c0;
+        }
+
+        .collaborators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .collaborator-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .collaborator-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .collaborator-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .collaborator-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .collaborator-card:hover .collaborator-image {
+            transform: scale(1.05);
+        }
+
+        .collaborator-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .collaborator-info h3 {
+            margin: 0 0 0.5rem 0;
+            color: #333;
+            font-size: 1.2rem;
+        }
+
+        .collaborator-role {
+            color: #1565c0;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .collaborator-company {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: #666;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #1565c0;
+        }
+
+        @media (max-width: 768px) {
+            .collaborators-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+
+        /* Style pour la section des entreprises partenaires */
+        .partners-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+        }
+
+        .partners-section h2 {
+            text-align: center;
+            color: #1565c0;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .partners-description {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .partner-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .partner-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .partner-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+        }
+
+        .partner-logo {
+            height: 60px;
+            width: auto;
+            margin-bottom: 1rem;
+            object-fit: contain;
+        }
+
+        .partner-name {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .partner-specialty {
+            color: #1565c0;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .partner-description {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .partners-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        /* Supprimer les styles du menu de navigation des sections */
+        .section-nav {
+            display: none;
+        }
+
+        .section-nav ul {
+            display: none;
+        }
+
+        .section-nav li {
+            display: none;
+        }
+
+        .section-nav a {
+            display: none;
+        }
+
+        .section-nav .icon {
+            display: none;
+        }
+
+        /* Supprimer les marges de section */
+        section {
+            scroll-margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo-container">
+                <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Cercle extérieur -->
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="#1877f2" stroke-width="2"/>
+                    
+                    <!-- Circuit imprimé -->
+                    <path d="M25,50 L75,50" stroke="#1877f2" stroke-width="2" fill="none"/>
+                    <path d="M50,25 L50,75" stroke="#1877f2" stroke-width="2" fill="none"/>
+                    
+                    <!-- Points de connexion -->
+                    <circle cx="50" cy="50" r="5" fill="#1877f2"/>
+                    <circle cx="25" cy="50" r="3" fill="#1877f2"/>
+                    <circle cx="75" cy="50" r="3" fill="#1877f2"/>
+                    <circle cx="50" cy="25" r="3" fill="#1877f2"/>
+                    <circle cx="50" cy="75" r="3" fill="#1877f2"/>
+                    
+                    <!-- Lignes diagonales -->
+                    <path d="M35,35 L65,65" stroke="#1877f2" stroke-width="2" fill="none"/>
+                    <path d="M35,65 L65,35" stroke="#1877f2" stroke-width="2" fill="none"/>
+                    
+                    <!-- Points aux intersections -->
+                    <circle cx="35" cy="35" r="2" fill="#1877f2"/>
+                    <circle cx="65" cy="65" r="2" fill="#1877f2"/>
+                    <circle cx="35" cy="65" r="2" fill="#1877f2"/>
+                    <circle cx="65" cy="35" r="2" fill="#1877f2"/>
+                    
+                    <!-- Cercle intérieur pulsant -->
+                    <circle cx="50" cy="50" r="15" fill="none" stroke="#1877f2" stroke-width="1.5">
+                        <animate attributeName="r" values="15;20;15" dur="2s" repeatCount="indefinite"/>
+                        <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                </svg>
+                <h1 class="logo-text">Camille<span>-Tech</span></h1>
+            </div>
+            <div class="auth-buttons">
+                <a href="se_connecter.html" class="btn-login">Se connecter</a>
+                <a href="inscription.html" class="btn-signup">S'inscrire</a>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#accueil">Accueil</a></li>
+            <li><a href="#avantages">Avantages</a></li>
+            <li><a href="ordinateurs.html">Ordinateurs</a></li>
+            <li><a href="peripheriques.html">Périphériques</a></li>
+            <li><a href="#collaborateurs">Collaborateurs</a></li>
+            <li><a href="#partenaires">Partenaires</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="accueil" class="hero">
+        <div class="hero-content">
+            <h1>Bienvenue chez Camille-Tech</h1>
+            <p>Votre destination pour des produits informatiques de qualité</p>
+            <a href="ordinateurs.html" class="cta-button">Découvrir nos produits</a>
+        </div>
+    </section>
+
+    <section id="avantages" class="advantages">
+        <h2>Pourquoi choisir nos produits ?</h2>
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <h3>Qualité Premium</h3>
+                <p>Nous sélectionnons uniquement les meilleures marques et produits testés et approuvés</p>
+            </div>
+            <div class="advantage-card">
+                <h3>Garantie Étendue</h3>
+                <p>Tous nos produits sont garantis avec un service après-vente réactif</p>
+            </div>
+            <div class="advantage-card">
+                <h3>Prix Compétitifs</h3>
+                <p>Nous vous proposons les meilleurs prix du marché sans compromis sur la qualité</p>
+            </div>
+            <div class="advantage-card">
+                <h3>Expertise Technique</h3>
+                <p>Notre équipe d'experts vous conseille pour faire le meilleur choix</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="collaborators-section" id="collaborateurs">
+        <h2>Nos Collaborateurs</h2>
+        <div class="collaborators-grid">
+            <div class="collaborator-card">
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a" alt="John Doe" class="collaborator-image">
+                <div class="collaborator-info">
+                    <h3>John Doe</h3>
+                    <div class="collaborator-role">Directeur Technique</div>
+                    <div class="collaborator-company">Microsoft</div>
+                    <p>Expert en solutions cloud et infrastructure IT</p>
+                    <div class="social-links">
+                        <a href="#" target="_blank"><img src="https://img.icons8.com/material-outlined/24/666666/linkedin.png" alt="LinkedIn"></a>
+                        <a href="#" target="_blank"><img src="https://img.icons8.com/material-outlined/24/666666/twitter.png" alt="Twitter"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collaborator-card">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2" alt="Sarah Johnson" class="collaborator-image">
+                <div class="collaborator-info">
+                    <h3>Sarah Johnson</h3>
+                    <div class="collaborator-role">Responsable Innovation</div>
+                    <div class="collaborator-company">Apple</div>
+                    <p>Spécialiste en design et expérience utilisateur</p>
+                    <div class="social-links">
+                        <a href="#" target="_blank"><img src="https://img.icons8.com/material-outlined/24/666666/linkedin.png" alt="LinkedIn"></a>
+                        <a href="#" target="_blank"><img src="https://img.icons8.com/material-outlined/24/666666/twitter.png" alt="Twitter"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collaborator-card">
+                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7" alt="Michael Chen" class="collaborator-image">
+                <div class="collaborator-info">
+                    <h3>Michael Chen</h3>
+                    <div class="collaborator-role">Architecte Solutions</div>
+                    <div class="collaborator-company">Amazon</div>
+                    <p>Expert en solutions e-commerce et cloud computing</p>
+                    <div class="social-links">
+                        <a href="#" target="_blank"><img src="https://img.icons8.com/material-outlined/24/666666/linkedin.png" alt="LinkedIn"></a>
+                        <a href="#" target="_blank"><img src="https://img.icons8.com/material-outlined/24/666666/twitter.png" alt="Twitter"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collaborator-card">
+                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956" alt="Emma Martinez" class="collaborator-image">
+                <div class="collaborator-info">
+                    <h3>Emma Martinez</h3>
+                    <div class="collaborator-role">Directrice Marketing</div>
+                    <div class="collaborator-company">Google</div>
+                    <p>Experte en stratégie digitale et marketing tech</p>
+                    <div class="social-links">
+                        <a href="#" target="_blank"><img src="https://img.icons8.com/material-outlined/24/666666/linkedin.png" alt="LinkedIn"></a>
+                        <a href="#" target="_blank"><img src="https://img.icons8.com/material-outlined/24/666666/twitter.png" alt="Twitter"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="partners-section" id="partenaires">
+        <h2>Nos Entreprises Partenaires</h2>
+        <p class="partners-description">
+            Nous sommes fiers de collaborer avec les leaders de l'industrie informatique pour vous offrir les meilleures solutions technologiques. Nos partenariats stratégiques nous permettent de vous proposer une expertise diversifiée et des produits de haute qualité.
+        </p>
+        <div class="partners-grid">
+            <div class="partner-card">
+                <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Google" class="partner-logo">
+                <h3 class="partner-name">Google</h3>
+                <div class="partner-specialty">Cloud Computing & IA</div>
+                <p class="partner-description">Solutions cloud avancées, intelligence artificielle et analytics pour entreprises.</p>
+            </div>
+
+            <div class="partner-card">
+                <img src="https://img.icons8.com/color/480/microsoft.png" alt="Microsoft" class="partner-logo">
+                <h3 class="partner-name">Microsoft</h3>
+                <div class="partner-specialty">Solutions Entreprise & Cloud</div>
+                <p class="partner-description">Services cloud Azure, solutions Office 365 et infrastructures d'entreprise.</p>
+            </div>
+
+            <div class="partner-card">
+                <img src="https://img.icons8.com/color/480/dell--v1.png" alt="Dell" class="partner-logo">
+                <h3 class="partner-name">Dell</h3>
+                <div class="partner-specialty">Hardware & Solutions Pro</div>
+                <p class="partner-description">Ordinateurs professionnels, serveurs et solutions de stockage.</p>
+            </div>
+
+            <div class="partner-card">
+                <img src="https://img.icons8.com/color/480/hp.png" alt="HP" class="partner-logo">
+                <h3 class="partner-name">HP</h3>
+                <div class="partner-specialty">Impression & Computing</div>
+                <p class="partner-description">Solutions d'impression professionnelle et ordinateurs haute performance.</p>
+            </div>
+
+            <div class="partner-card">
+                <img src="https://img.icons8.com/color/480/intel.png" alt="Intel" class="partner-logo">
+                <h3 class="partner-name">Intel</h3>
+                <div class="partner-specialty">Processeurs & Innovation</div>
+                <p class="partner-description">Processeurs haute performance et solutions de calcul avancées.</p>
+            </div>
+
+            <div class="partner-card">
+                <img src="https://img.icons8.com/color/480/cisco.png" alt="Cisco" class="partner-logo">
+                <h3 class="partner-name">Cisco</h3>
+                <div class="partner-specialty">Réseaux & Sécurité</div>
+                <p class="partner-description">Infrastructure réseau, cybersécurité et solutions de collaboration.</p>
+            </div>
+
+            <div class="partner-card">
+                <img src="https://img.icons8.com/color/480/amazon-web-services.png" alt="AWS" class="partner-logo">
+                <h3 class="partner-name">Amazon Web Services</h3>
+                <div class="partner-specialty">Cloud & Services Web</div>
+                <p class="partner-description">Services cloud, hébergement et solutions scalables.</p>
+            </div>
+
+            <div class="partner-card">
+                <img src="https://img.icons8.com/color/480/oracle-logo.png" alt="Oracle" class="partner-logo">
+                <h3 class="partner-name">Oracle</h3>
+                <div class="partner-specialty">Bases de données & Cloud</div>
+                <p class="partner-description">Solutions de bases de données et applications cloud entreprise.</p>
+            </div>
+
+            <div class="partner-card">
+                <img src="https://img.icons8.com/color/480/nvidia.png" alt="NVIDIA" class="partner-logo">
+                <h3 class="partner-name">NVIDIA</h3>
+                <div class="partner-specialty">GPU & IA</div>
+                <p class="partner-description">Solutions graphiques professionnelles et calcul IA.</p>
+            </div>
+
+            <div class="partner-card">
+                <img src="https://img.icons8.com/color/480/lenovo.png" alt="Lenovo" class="partner-logo">
+                <h3 class="partner-name">Lenovo</h3>
+                <div class="partner-specialty">PC & Solutions Pro</div>
+                <p class="partner-description">Ordinateurs professionnels et solutions d'infrastructure.</p>
+            </div>
+
+            <div class="partner-card">
+                <img src="https://img.icons8.com/color/480/amd.png" alt="AMD" class="partner-logo">
+                <h3 class="partner-name">AMD</h3>
+                <div class="partner-specialty">Processeurs & GPU</div>
+                <p class="partner-description">Solutions de calcul haute performance et cartes graphiques.</p>
+            </div>
+
+            <div class="partner-card">
+                <img src="https://img.icons8.com/color/480/symantec.png" alt="Symantec" class="partner-logo">
+                <h3 class="partner-name">Symantec</h3>
+                <div class="partner-specialty">Cybersécurité</div>
+                <p class="partner-description">Solutions de sécurité et protection des données.</p>
+            </div>
+
+            <div class="partner-card">
+                <img src="https://img.icons8.com/color/480/ibm.png" alt="IBM" class="partner-logo">
+                <h3 class="partner-name">IBM</h3>
+                <div class="partner-specialty">IA & Services Cloud</div>
+                <p class="partner-description">Solutions d'intelligence artificielle et services cloud entreprise.</p>
+            </div>
+
+            <div class="partner-card">
+                <img src="https://img.icons8.com/color/480/vmware.png" alt="VMware" class="partner-logo">
+                <h3 class="partner-name">VMware</h3>
+                <div class="partner-specialty">Virtualisation</div>
+                <p class="partner-description">Solutions de virtualisation et cloud computing.</p>
+            </div>
+
+            <div class="partner-card">
+                <img src="https://img.icons8.com/color/480/samsung.png" alt="Samsung" class="partner-logo">
+                <h3 class="partner-name">Samsung</h3>
+                <div class="partner-specialty">Stockage & Affichage</div>
+                <p class="partner-description">Solutions de stockage et écrans professionnels.</p>
+            </div>
+
+            <div class="partner-card">
+                <img src="https://img.icons8.com/color/480/acer.png" alt="Acer" class="partner-logo">
+                <h3 class="partner-name">Acer</h3>
+                <div class="partner-specialty">PC & Moniteurs</div>
+                <p class="partner-description">Ordinateurs et écrans pour professionnels.</p>
+            </div>
+
+            <div class="partner-card">
+                <img src="https://img.icons8.com/color/480/mac-os.png" alt="Apple" class="partner-logo">
+                <h3 class="partner-name">Apple</h3>
+                <div class="partner-specialty">Solutions Créatives</div>
+                <p class="partner-description">Matériel et logiciels pour les professionnels créatifs.</p>
+            </div>
+
+            <div class="partner-card">
+                <img src="https://img.icons8.com/color/480/asus.png" alt="ASUS" class="partner-logo">
+                <h3 class="partner-name">ASUS</h3>
+                <div class="partner-specialty">PC & Composants</div>
+                <p class="partner-description">Ordinateurs et composants haute performance.</p>
+            </div>
+
+            <div class="partner-card">
+                <img src="https://img.icons8.com/color/480/western-digital.png" alt="Western Digital" class="partner-logo">
+                <h3 class="partner-name">Western Digital</h3>
+                <div class="partner-specialty">Stockage</div>
+                <p class="partner-description">Solutions de stockage professionnelles et grand public.</p>
+            </div>
+
+            <div class="partner-card">
+                <img src="https://img.icons8.com/color/480/seagate.png" alt="Seagate" class="partner-logo">
+                <h3 class="partner-name">Seagate</h3>
+                <div class="partner-specialty">Stockage Pro</div>
+                <p class="partner-description">Solutions de stockage haute capacité pour entreprises.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <h2>Contactez-nous</h2>
+        <div class="contact-info">
+            <p>Email: contact@camille-tech.fr</p>
+            <p>Téléphone: +229 67661936</p>
+            <p>Adresse: 123 Avenue de l'Informatique, 75000 Paris</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>Camille-Tech - Votre expert en matériel informatique</p>
+        <p>© 2025 Camille-Tech. Tous droits réservés.</p>
+        <p>© créé par LOKO Camille Développeur web</p>
+    </footer>
+
+    <script>
+        // Création des particules
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 5 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                const duration = 3 + Math.random() * 4;
+                const delay = Math.random() * 2;
+                
+                particle.style.animation = `float ${duration}s infinite ease-in-out`;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Animation au défilement
+        function handleScroll() {
+            const sections = document.querySelectorAll('.advantages, .contact-section');
+            const cards = document.querySelectorAll('.advantage-card');
+            const contactInfo = document.querySelector('.contact-info');
+            
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (sectionTop < windowHeight * 0.75) {
+                    section.classList.add('visible');
+                }
+            });
+
+            cards.forEach((card, index) => {
+                const cardTop = card.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (cardTop < windowHeight * 0.75) {
+                    setTimeout(() => {
+                        card.classList.add('visible');
+                    }, index * 200);
+                }
+            });
+
+            if (contactInfo) {
+                const infoTop = contactInfo.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (infoTop < windowHeight * 0.75) {
+                    contactInfo.classList.add('visible');
+                }
+            }
+
+            handleCollaboratorCards();
+            handlePartnerCards();
+        }
+
+        // Ajouter la fonction pour animer les cartes des collaborateurs
+        function handleCollaboratorCards() {
+            const cards = document.querySelectorAll('.collaborator-card');
+            
+            cards.forEach((card, index) => {
+                const cardTop = card.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (cardTop < windowHeight * 0.75) {
+                    setTimeout(() => {
+                        card.classList.add('visible');
+                    }, index * 200);
+                }
+            });
+        }
+
+        // Ajouter la fonction pour animer les cartes des partenaires
+        function handlePartnerCards() {
+            const cards = document.querySelectorAll('.partner-card');
+            
+            cards.forEach((card, index) => {
+                const cardTop = card.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (cardTop < windowHeight * 0.75) {
+                    setTimeout(() => {
+                        card.classList.add('visible');
+                    }, index * 100);
+                }
+            });
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            handleScroll(); // Vérifier les éléments visibles au chargement
+            window.addEventListener('scroll', handleScroll);
+        });
+
+        // Ajout du code pour gérer la navigation active
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('nav a');
+            const sections = document.querySelectorAll('section');
+
+            function setActiveLink() {
+                const scrollPosition = window.scrollY;
+
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    const sectionBottom = sectionTop + section.offsetHeight;
+
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                        const currentId = section.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${currentId}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }
+
+            // Gestion du scroll fluide
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('href');
+                        const targetSection = document.querySelector(targetId);
+                        if (targetSection) {
+                            targetSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }
+                });
+            });
+
+            window.addEventListener('scroll', setActiveLink);
+            setActiveLink();
+        });
+
+        // Initialisation du panier
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialiser le panier s'il n'existe pas
+            if (!localStorage.getItem('camille_tech_cart')) {
+                localStorage.setItem('camille_tech_cart', JSON.stringify([]));
+            }
+
+            // Mettre à jour le compteur du panier
+            updateCartCount();
+        });
+
+        // Fonction pour mettre à jour le compteur du panier
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('camille_tech_cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+            const cartCount = document.getElementById('cart-count');
+            if (cartCount) {
+                cartCount.textContent = totalItems;
+                
+                // Animation du compteur
+                cartCount.style.animation = 'none';
+                cartCount.offsetHeight; // Forcer le reflow
+                cartCount.style.animation = 'pulse 0.5s ease-out';
+            }
+        }
+
+        // Fonction pour vérifier si le localStorage est disponible
+        function isLocalStorageAvailable() {
+            try {
+                localStorage.setItem('test', 'test');
+                localStorage.removeItem('test');
+                return true;
+            } catch (e) {
+                console.error('LocalStorage n\'est pas disponible:', e);
+                return false;
+            }
+        }
+
+        // Vérifier la disponibilité du localStorage au chargement
+        if (!isLocalStorageAvailable()) {
+            console.error('LocalStorage n\'est pas disponible. Le panier ne fonctionnera pas correctement.');
+            alert('Attention: Le stockage local n\'est pas disponible. Le panier pourrait ne pas fonctionner correctement.');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camille-Tech - Ordinateurs</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Styles de l'en-tête et de la navigation */
+        header {
+            background: linear-gradient(135deg, #1565c0, #1a237e);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .logo-text span {
+            color: #4caf50;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-login, .btn-signup {
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-login {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+
+        .btn-signup {
+            background: #4caf50;
+            border: 2px solid #4caf50;
+            color: white;
+        }
+
+        .btn-login:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-signup:hover {
+            background: #45a049;
+            border-color: #45a049;
+            transform: translateY(-2px);
+        }
+
+        nav {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        nav ul {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #1565c0;
+            background: rgba(21, 101, 192, 0.1);
+        }
+
+        nav a.active {
+            color: #1565c0;
+            background: rgba(21, 101, 192, 0.1);
+        }
+
+        #cart-count {
+            background: #4caf50;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 50%;
+            font-size: 0.8rem;
+            margin-left: 0.3rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            gap: 1rem;
+        }
+
+            nav ul {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            nav a {
+                padding: 0.3rem 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Styles spécifiques pour la page des ordinateurs */
+        .products-section {
+            padding: 4rem 2rem;
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        .products-section h2 {
+            text-align: center;
+            color: #1565c0;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .products-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: #1565c0;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.1);
+        }
+
+        .product-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            color: #1565c0;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .product-specs {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .add-to-cart {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: #1565c0;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .add-to-cart:hover {
+            background: #1a237e;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #4caf50;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .products-section h2 {
+                font-size: 2rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo-container">
+                <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 10 L90 30 L90 70 L50 90 L10 70 L10 30 Z" />
+                </svg>
+                <h1 class="logo-text">Camille<span>-Tech</span></h1>
+            </div>
+            <div class="auth-buttons">
+                <a href="se_connecter.html" class="btn-login">Se connecter</a>
+                <a href="inscription.html" class="btn-signup">S'inscrire</a>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="ordinateurs.html" class="active">Ordinateurs</a></li>
+            <li><a href="peripheriques.html">Périphériques</a></li>
+            <li><a href="panier.html">Panier <span id="cart-count">0</span></a></li>
+        </ul>
+    </nav>
+
+    <section class="products-section">
+        <h2>Nos Ordinateurs</h2>
+    <div class="products-grid" id="products-container">
+            <!-- Les produits seront ajoutés dynamiquement ici -->
+    </div>
+    </section>
+
+    <footer>
+        <p>Camille-Tech - Votre expert en matériel informatique</p>
+        <p>© 2025 Camille-Tech. Tous droits réservés.</p>
+        <p>© créé par LOKO Camille Développeur web</p>
+    </footer>
+
+    <script>
+        // Données des ordinateurs
+        const computers = [
+            {
+                id: 1,
+                name: "PC Gamer Pro",
+                price: 1299.99,
+                image: "https://images.unsplash.com/photo-1587202372775-e229f172b9d3",
+                specs: "Intel i7, 16GB RAM, RTX 3070, 1TB SSD",
+                badge: "Gaming"
+            },
+            {
+                id: 2,
+                name: "Laptop Ultrabook",
+                price: 899.99,
+                image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853",
+                specs: "Intel i5, 8GB RAM, 512GB SSD, 14\"",
+                badge: "Portable"
+            },
+            {
+                id: 3,
+                name: "Workstation Pro",
+                price: 1999.99,
+                image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
+                specs: "Intel i9, 32GB RAM, RTX 3080, 2TB SSD",
+                badge: "Pro"
+            },
+            {
+                id: 4,
+                name: "PC Bureau Économique",
+                price: 499.99,
+                image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45",
+                specs: "Intel i3, 8GB RAM, 256GB SSD",
+                badge: "Économique"
+            },
+            {
+                id: 5,
+                name: "PC Gamer Elite",
+                price: 2499.99,
+                image: "https://images.unsplash.com/photo-1587202372775-e229f172b9d3",
+                specs: "Intel i9, 32GB RAM, RTX 4090, 2TB SSD",
+                badge: "Gaming"
+            },
+            {
+                id: 6,
+                name: "MacBook Pro M2",
+                price: 1799.99,
+                image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853",
+                specs: "Apple M2, 16GB RAM, 512GB SSD, 14\"",
+                badge: "Apple"
+            },
+            {
+                id: 7,
+                name: "PC Créatif",
+                price: 1599.99,
+                image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
+                specs: "AMD Ryzen 9, 32GB RAM, RTX 4070, 1TB SSD",
+                badge: "Création"
+            },
+            {
+                id: 8,
+                name: "PC Mini",
+                price: 699.99,
+                image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45",
+                specs: "Intel i5, 16GB RAM, 512GB SSD",
+                badge: "Compact"
+            },
+            {
+                id: 9,
+                name: "PC Gamer Stream",
+                price: 1899.99,
+                image: "https://images.unsplash.com/photo-1587202372775-e229f172b9d3",
+                specs: "AMD Ryzen 7, 32GB RAM, RTX 4080, 2TB SSD",
+                badge: "Streaming"
+            },
+            {
+                id: 10,
+                name: "Laptop Gaming",
+                price: 1499.99,
+                image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853",
+                specs: "Intel i7, 16GB RAM, RTX 4060, 1TB SSD, 15.6\"",
+                badge: "Gaming"
+            },
+            {
+                id: 11,
+                name: "PC Workstation",
+                price: 2999.99,
+                image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
+                specs: "Intel Xeon, 64GB RAM, RTX A5000, 4TB SSD",
+                badge: "Pro"
+            },
+            {
+                id: 12,
+                name: "PC All-in-One",
+                price: 999.99,
+                image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45",
+                specs: "Intel i5, 16GB RAM, 512GB SSD, 24\"",
+                badge: "Tout-en-un"
+            },
+            {
+                id: 13,
+                name: "PC Gamer RGB",
+                price: 1699.99,
+                image: "https://images.unsplash.com/photo-1587202372775-e229f172b9d3",
+                specs: "AMD Ryzen 7, 32GB RAM, RTX 4070 Ti, 2TB SSD",
+                badge: "RGB"
+            },
+            {
+                id: 14,
+                name: "MacBook Air M2",
+                price: 1299.99,
+                image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853",
+                specs: "Apple M2, 16GB RAM, 512GB SSD, 13.6\"",
+                badge: "Apple"
+            },
+            {
+                id: 15,
+                name: "PC Création Pro",
+                price: 2199.99,
+                image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
+                specs: "Intel i9, 64GB RAM, RTX 4080, 2TB SSD",
+                badge: "Création"
+            },
+            {
+                id: 16,
+                name: "PC Mini Pro",
+                price: 899.99,
+                image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45",
+                specs: "Intel i7, 16GB RAM, 1TB SSD",
+                badge: "Compact"
+            },
+            {
+                id: 17,
+                name: "PC Gamer Ultimate",
+                price: 3499.99,
+                image: "https://images.unsplash.com/photo-1587202372775-e229f172b9d3",
+                specs: "AMD Ryzen 9, 64GB RAM, RTX 4090, 4TB SSD",
+                badge: "Ultimate"
+            },
+            {
+                id: 18,
+                name: "Laptop Pro",
+                price: 1999.99,
+                image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853",
+                specs: "Intel i9, 32GB RAM, RTX 4070, 2TB SSD, 16\"",
+                badge: "Pro"
+            },
+            {
+                id: 19,
+                name: "PC Serveur",
+                price: 3999.99,
+                image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
+                specs: "Dual Xeon, 128GB RAM, 8TB SSD",
+                badge: "Serveur"
+            },
+            {
+                id: 20,
+                name: "PC All-in-One Pro",
+                price: 1499.99,
+                image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45",
+                specs: "Intel i7, 32GB RAM, 1TB SSD, 27\"",
+                badge: "Tout-en-un"
+            },
+            {
+                id: 21,
+                name: "PC Gamer Stream Pro",
+                price: 2799.99,
+                image: "https://images.unsplash.com/photo-1587202372775-e229f172b9d3",
+                specs: "AMD Ryzen 9, 64GB RAM, RTX 4080, 4TB SSD",
+                badge: "Streaming"
+            },
+            {
+                id: 22,
+                name: "MacBook Pro M2 Max",
+                price: 2999.99,
+                image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853",
+                specs: "Apple M2 Max, 32GB RAM, 2TB SSD, 16\"",
+                badge: "Apple"
+            },
+            {
+                id: 23,
+                name: "PC Création Ultimate",
+                price: 3499.99,
+                image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
+                specs: "Intel i9, 128GB RAM, RTX 4090, 4TB SSD",
+                badge: "Création"
+            },
+            {
+                id: 24,
+                name: "PC Mini Elite",
+                price: 1299.99,
+                image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45",
+                specs: "Intel i9, 32GB RAM, 2TB SSD",
+                badge: "Compact"
+            },
+            {
+                id: 25,
+                name: "PC Gamer RGB Pro",
+                price: 2299.99,
+                image: "https://images.unsplash.com/photo-1587202372775-e229f172b9d3",
+                specs: "AMD Ryzen 9, 32GB RAM, RTX 4080, 2TB SSD",
+                badge: "RGB"
+            },
+            {
+                id: 26,
+                name: "Laptop Gaming Pro",
+                price: 1999.99,
+                image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853",
+                specs: "Intel i9, 32GB RAM, RTX 4070, 2TB SSD, 17\"",
+                badge: "Gaming"
+            },
+            {
+                id: 27,
+                name: "PC Workstation Pro",
+                price: 3999.99,
+                image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
+                specs: "AMD Threadripper, 128GB RAM, RTX A6000, 8TB SSD",
+                badge: "Pro"
+            },
+            {
+                id: 28,
+                name: "PC All-in-One Elite",
+                price: 1999.99,
+                image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45",
+                specs: "Intel i9, 32GB RAM, 2TB SSD, 32\"",
+                badge: "Tout-en-un"
+            },
+            {
+                id: 29,
+                name: "PC Gamer Ultimate Pro",
+                price: 4499.99,
+                image: "https://images.unsplash.com/photo-1587202372775-e229f172b9d3",
+                specs: "AMD Ryzen 9, 128GB RAM, RTX 4090, 8TB SSD",
+                badge: "Ultimate"
+            },
+            {
+                id: 30,
+                name: "MacBook Pro M2 Ultra",
+                price: 3999.99,
+                image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853",
+                specs: "Apple M2 Ultra, 64GB RAM, 4TB SSD, 16\"",
+                badge: "Apple"
+            },
+            {
+                id: 31,
+                name: "PC Création Master",
+                price: 4999.99,
+                image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
+                specs: "Intel i9, 256GB RAM, RTX 4090, 8TB SSD",
+                badge: "Création"
+            },
+            {
+                id: 32,
+                name: "PC Mini Master",
+                price: 1599.99,
+                image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45",
+                specs: "Intel i9, 64GB RAM, 4TB SSD",
+                badge: "Compact"
+            },
+            {
+                id: 33,
+                name: "PC Gamer RGB Master",
+                price: 2999.99,
+                image: "https://images.unsplash.com/photo-1587202372775-e229f172b9d3",
+                specs: "AMD Ryzen 9, 64GB RAM, RTX 4090, 4TB SSD",
+                badge: "RGB"
+            },
+            {
+                id: 34,
+                name: "Laptop Gaming Master",
+                price: 2499.99,
+                image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853",
+                specs: "Intel i9, 64GB RAM, RTX 4080, 4TB SSD, 17\"",
+                badge: "Gaming"
+            },
+            {
+                id: 35,
+                name: "PC Workstation Master",
+                price: 4999.99,
+                image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
+                specs: "AMD Threadripper Pro, 256GB RAM, RTX A6000, 16TB SSD",
+                badge: "Pro"
+            },
+            {
+                id: 36,
+                name: "PC All-in-One Master",
+                price: 2999.99,
+                image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45",
+                specs: "Intel i9, 64GB RAM, 4TB SSD, 43\"",
+                badge: "Tout-en-un"
+            },
+            {
+                id: 37,
+                name: "PC Gamer Ultimate Master",
+                price: 5999.99,
+                image: "https://images.unsplash.com/photo-1587202372775-e229f172b9d3",
+                specs: "AMD Ryzen 9, 256GB RAM, RTX 4090, 16TB SSD",
+                badge: "Ultimate"
+            },
+            {
+                id: 38,
+                name: "MacBook Pro M2 Extreme",
+                price: 4999.99,
+                image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853",
+                specs: "Apple M2 Extreme, 128GB RAM, 8TB SSD, 16\"",
+                badge: "Apple"
+            },
+            {
+                id: 39,
+                name: "PC Création Extreme",
+                price: 6999.99,
+                image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
+                specs: "Intel i9, 512GB RAM, RTX 4090, 16TB SSD",
+                badge: "Création"
+            },
+            {
+                id: 40,
+                name: "PC Mini Extreme",
+                price: 1999.99,
+                image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45",
+                specs: "Intel i9, 128GB RAM, 8TB SSD",
+                badge: "Compact"
+            }
+        ];
+
+        // Fonction pour créer une carte de produit
+        function createProductCard(product) {
+            return `
+                <div class="product-card">
+                    ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-content">
+                        <h3 class="product-title">${product.name}</h3>
+                        <div class="product-price">${product.price.toFixed(2)} €</div>
+                        <p class="product-specs">${product.specs}</p>
+                        <button class="add-to-cart" onclick="addToCart(${product.id})">
+                            Ajouter au panier
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Fonction pour ajouter un produit au panier
+        function addToCart(productId) {
+            try {
+                // Trouver le produit correspondant à l'ID
+                const product = computers.find(p => p.id === productId);
+                if (!product) {
+                    console.error('Produit non trouvé');
+                    return;
+                }
+
+                // Récupérer le panier actuel ou créer un nouveau tableau vide
+                let cart = JSON.parse(localStorage.getItem('camille_tech_cart')) || [];
+                
+                // Vérifier si le produit existe déjà dans le panier
+                const existingProductIndex = cart.findIndex(item => item.id === product.id);
+                
+                if (existingProductIndex !== -1) {
+                    // Si le produit existe, augmenter sa quantité
+                    cart[existingProductIndex].quantity = (cart[existingProductIndex].quantity || 1) + 1;
+                } else {
+                    // Si le produit n'existe pas, l'ajouter avec une quantité de 1
+                    // Ne stocker que les informations essentielles
+                    const productToAdd = {
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        quantity: 1
+                    };
+                    cart.push(productToAdd);
+                }
+
+                // Sauvegarder le panier mis à jour
+                localStorage.setItem('camille_tech_cart', JSON.stringify(cart));
+
+                // Mettre à jour le compteur du panier
+                updateCartCount();
+
+                // Animation de confirmation
+                const button = event.target;
+                button.textContent = 'Ajouté !';
+                button.style.background = '#4caf50';
+                
+                setTimeout(() => {
+                    button.textContent = 'Ajouter au panier';
+                    button.style.background = '#1565c0';
+                }, 2000);
+
+                // Rediriger vers le panier après l'ajout
+                window.location.href = 'panier.html';
+            } catch (error) {
+                console.error('Erreur lors de l\'ajout au panier:', error);
+                alert('Une erreur est survenue lors de l\'ajout au panier. Veuillez réessayer.');
+            }
+        }
+
+        // Fonction pour mettre à jour le compteur du panier
+        function updateCartCount() {
+            try {
+                const cart = JSON.parse(localStorage.getItem('camille_tech_cart')) || [];
+                const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+                const cartCountElement = document.getElementById('cart-count');
+                if (cartCountElement) {
+                    cartCountElement.textContent = totalItems;
+                }
+            } catch (error) {
+                console.error('Erreur lors de la mise à jour du compteur:', error);
+            }
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+            const container = document.getElementById('products-container');
+                if (container) {
+                    computers.forEach(computer => {
+                container.innerHTML += createProductCard(computer);
+                    });
+                }
+                updateCartCount();
+            } catch (error) {
+                console.error('Erreur lors de l\'initialisation:', error);
+            }
+        });
+    </script>
+</body>
+</html> 

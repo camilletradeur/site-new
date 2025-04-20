@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paiement - Camille-Tech</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding-bottom: 2rem;
+        }
+
+        header {
+            background: linear-gradient(to right, #1a237e, #1565c0);
+            color: white;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+
+        .payment-methods {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .payment-title {
+            color: #1565c0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #1565c0;
+        }
+
+        .payment-option {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-option:hover {
+            border-color: #1565c0;
+            transform: translateY(-2px);
+        }
+
+        .payment-option.selected {
+            border-color: #1565c0;
+            background: #e3f2fd;
+        }
+
+        .payment-option-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .payment-icon {
+            font-size: 2rem;
+        }
+
+        .payment-details {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .payment-option.selected .payment-details {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .mobile-money-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .mobile-money-option {
+            text-align: center;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-money-option:hover {
+            border-color: #1565c0;
+            transform: translateY(-2px);
+        }
+
+        .mobile-money-option.selected {
+            border-color: #1565c0;
+            background: #e3f2fd;
+        }
+
+        .mobile-money-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .order-summary {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .summary-title {
+            color: #1565c0;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #1565c0;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .summary-row.total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1565c0;
+            border-bottom: none;
+            margin-top: 1rem;
+        }
+
+        .confirm-btn {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .confirm-btn:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+        }
+
+        .confirm-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .order-summary {
+                position: static;
+                margin-top: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Paiement</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="payment-methods">
+            <h2 class="payment-title">Choisissez votre moyen de paiement</h2>
+            
+            <!-- Mobile Money -->
+            <div class="payment-option" onclick="selectPaymentMethod(this, 'mobile-money')">
+                <div class="payment-option-header">
+                    <span class="payment-icon">📱</span>
+                    <div>
+                        <h3>Mobile Money</h3>
+                        <p>MTN, Moov, Wave, Orange Money</p>
+                    </div>
+                </div>
+                <div class="payment-details">
+                    <div class="mobile-money-grid">
+                        <div class="mobile-money-option" onclick="selectMobileOperator(event, this, 'mtn')">
+                            <div class="mobile-money-icon">🟡</div>
+                            <div>MTN Money</div>
+                        </div>
+                        <div class="mobile-money-option" onclick="selectMobileOperator(event, this, 'moov')">
+                            <div class="mobile-money-icon">🔵</div>
+                            <div>Moov Money</div>
+                        </div>
+                        <div class="mobile-money-option" onclick="selectMobileOperator(event, this, 'orange')">
+                            <div class="mobile-money-icon">🟠</div>
+                            <div>Orange Money</div>
+                        </div>
+                        <div class="mobile-money-option" onclick="selectMobileOperator(event, this, 'wave')">
+                            <div class="mobile-money-icon">💙</div>
+                            <div>Wave</div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>Numéro de téléphone</label>
+                        <input type="tel" placeholder="Ex: +229 XX XX XX XX" pattern="\+229[0-9]{8}">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte Bancaire -->
+            <div class="payment-option" onclick="selectPaymentMethod(this, 'card')">
+                <div class="payment-option-header">
+                    <span class="payment-icon">💳</span>
+                    <div>
+                        <h3>Carte Bancaire</h3>
+                        <p>Visa, Mastercard, American Express</p>
+                    </div>
+                </div>
+                <div class="payment-details">
+                    <div class="form-group">
+                        <label>Numéro de carte</label>
+                        <input type="text" placeholder="XXXX XXXX XXXX XXXX">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label>Date d'expiration</label>
+                            <input type="text" placeholder="MM/AA">
+                        </div>
+                        <div class="form-group">
+                            <label>CVV</label>
+                            <input type="text" placeholder="XXX">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nom sur la carte</label>
+                        <input type="text" placeholder="Ex: JOHN DOE">
+                    </div>
+                </div>
+            </div>
+
+            <!-- PayPal -->
+            <div class="payment-option" onclick="selectPaymentMethod(this, 'paypal')">
+                <div class="payment-option-header">
+                    <span class="payment-icon">🌐</span>
+                    <div>
+                        <h3>PayPal</h3>
+                        <p>Paiement sécurisé via PayPal</p>
+                    </div>
+                </div>
+                <div class="payment-details">
+                    <p style="color: #666;">Vous serez redirigé vers PayPal pour finaliser votre paiement en toute sécurité.</p>
+                </div>
+            </div>
+
+            <!-- Paiement à la livraison -->
+            <div class="payment-option" onclick="selectPaymentMethod(this, 'cash')">
+                <div class="payment-option-header">
+                    <span class="payment-icon">💵</span>
+                    <div>
+                        <h3>Paiement à la livraison</h3>
+                        <p>Payez en espèces à la réception</p>
+                    </div>
+                </div>
+                <div class="payment-details">
+                    <div class="form-group">
+                        <label>Adresse de livraison</label>
+                        <input type="text" placeholder="Entrez votre adresse complète">
+                    </div>
+                    <div class="form-group">
+                        <label>Instructions de livraison (optionnel)</label>
+                        <input type="text" placeholder="Ex: Sonner à l'interphone, appeler avant la livraison...">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="order-summary">
+            <h2 class="summary-title">Résumé de la commande</h2>
+            <div id="summary-content">
+                <!-- Le contenu sera ajouté dynamiquement -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour valider le panier
+        function validateCart() {
+            let cart = JSON.parse(localStorage.getItem('camille_tech_cart')) || [];
+            let hasChanges = false;
+
+            // Vérifier chaque élément du panier
+            cart = cart.map(item => {
+                // S'assurer que l'élément a tous les champs requis
+                if (!item.id || !item.name || !item.price || !item.quantity) {
+                    return null; // Élément invalide, à supprimer
+                }
+
+                // S'assurer que le type est défini
+                if (!item.type) {
+                    item.type = 'peripherique'; // Type par défaut
+                    hasChanges = true;
+                }
+
+                // S'assurer que les spécifications sont dans le bon format
+                if (item.type === 'ordinateur' && (!item.specs || typeof item.specs !== 'object')) {
+                    item.specs = {
+                        processor: 'Non spécifié',
+                        ram: 'Non spécifié',
+                        storage: 'Non spécifié',
+                        gpu: 'Non spécifié'
+                    };
+                    hasChanges = true;
+                }
+
+                return item;
+            }).filter(item => item !== null); // Filtrer les éléments invalides
+
+            // Enregistrer le panier corrigé si des modifications ont été apportées
+            if (hasChanges || cart.length < JSON.parse(localStorage.getItem('camille_tech_cart') || '[]').length) {
+                localStorage.setItem('camille_tech_cart', JSON.stringify(cart));
+            }
+
+            return cart;
+        }
+
+        // Fonction pour mettre à jour le résumé de la commande
+        function updateOrderSummary() {
+            const cart = validateCart();
+            if (cart.length === 0) {
+                window.location.href = 'panier.html';
+                return;
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.18; // TVA 18%
+            const total = subtotal + tax;
+
+            const summaryContainer = document.querySelector('.order-summary');
+            summaryContainer.innerHTML = `
+                <h2 class="summary-title">Résumé de la commande</h2>
+                <div class="summary-row">
+                    <span>Sous-total</span>
+                    <span>${subtotal.toLocaleString()} FCFA</span>
+                </div>
+                <div class="summary-row">
+                    <span>TVA (18%)</span>
+                    <span>${tax.toLocaleString()} FCFA</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span>${total.toLocaleString()} FCFA</span>
+                </div>
+                <button class="confirm-btn" onclick="processPayment()">
+                    Confirmer le paiement
+                </button>
+            `;
+        }
+
+        // Fonction pour traiter le paiement
+        function processPayment() {
+            const cart = validateCart();
+            if (cart.length === 0) {
+                alert('Votre panier est vide');
+                return;
+            }
+
+            const paymentMethod = document.querySelector('.payment-option.selected');
+            if (!paymentMethod) {
+                alert('Veuillez sélectionner un moyen de paiement');
+                return;
+            }
+
+            // Créer l'objet de commande
+            const order = {
+                date: new Date().toLocaleString(),
+                items: cart,
+                total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 1.18, // Total avec TVA
+                paymentMethod: paymentMethod.querySelector('h3').textContent
+            };
+
+            // Sauvegarder la commande
+            localStorage.setItem('lastOrder', JSON.stringify(order));
+
+            // Vider le panier
+            localStorage.removeItem('camille_tech_cart');
+
+            // Rediriger vers la page de confirmation
+            window.location.href = 'confirmation.html';
+        }
+
+        // Fonction pour sélectionner un moyen de paiement
+        function selectPaymentMethod(element, type) {
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        function selectMobileOperator(event, element, operator) {
+            event.stopPropagation(); // Empêcher la propagation au parent
+            
+            // Désélectionner tous les opérateurs
+            document.querySelectorAll('.mobile-money-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Sélectionner l'opérateur cliqué
+            element.classList.add('selected');
+        }
+
+        // Initialiser la page
+        document.addEventListener('DOMContentLoaded', () => {
+            updateOrderSummary();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion Facebook - Camille-Tech</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                        url('https://images.unsplash.com/photo-1432888622747-4eb9a8f1c28b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .facebook-logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+            border-radius: 50%;
+            background-color: #1877f2;
+            padding: 10px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+
+        .facebook-btn {
+            background-color: #1877f2;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 1rem auto;
+            transition: all 0.3s ease;
+        }
+
+        .facebook-btn:hover {
+            background-color: #166fe5;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(24, 119, 242, 0.3);
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            color: #666;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .privacy-text {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 2rem;
+            padding: 0 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Facebook_logo_36x36.svg/1200px-Facebook_logo_36x36.svg.png" alt="Facebook Logo" class="facebook-logo">
+        <h1>Connexion avec Facebook</h1>
+        <button class="facebook-btn" onclick="handleFacebookAuth()">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Facebook_logo_36x36.svg/1200px-Facebook_logo_36x36.svg.png" alt="Facebook" width="20">
+            Continuer avec Facebook
+        </button>
+        <p class="privacy-text">
+            En vous connectant, vous acceptez nos conditions d'utilisation et notre politique de confidentialité.
+        </p>
+        <a href="se_connecter.html" class="back-btn">Retour</a>
+    </div>
+
+    <script>
+        function handleFacebookAuth() {
+            // Ici, vous implémenterez l'authentification Facebook OAuth
+            console.log('Tentative de connexion avec Facebook');
+            // Redirection vers l'API Facebook OAuth
+        }
+    </script>
+</body>
+</html> 

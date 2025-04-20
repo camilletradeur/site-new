@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation de commande - Camille-Tech</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .confirmation-card {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: #2e7d32;
+            margin-bottom: 1rem;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .confirmation-title {
+            color: #1565c0;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .confirmation-message {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .order-details {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .order-number {
+            color: #1565c0;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #1565c0;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .items-list {
+            margin: 1rem 0;
+        }
+
+        .item {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1rem;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .item-icon {
+            font-size: 1.5rem;
+        }
+
+        .item-details {
+            text-align: left;
+        }
+
+        .item-price {
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #1565c0;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1a237e;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="confirmation-card">
+            <div class="success-icon">✅</div>
+            <h1 class="confirmation-title">Commande confirmée !</h1>
+            <p class="confirmation-message">
+                Merci pour votre commande. Un email de confirmation a été envoyé à votre adresse email.
+                <br>
+                Notre équipe va traiter votre commande dans les plus brefs délais.
+            </p>
+
+            <div class="order-details">
+                <div class="order-number">
+                    Commande #<span id="orderNumber"></span>
+                </div>
+                
+                <div class="detail-row">
+                    <span>Date de la commande</span>
+                    <span id="orderDate"></span>
+                </div>
+                
+                <div class="detail-row">
+                    <span>Moyen de paiement</span>
+                    <span id="paymentMethod"></span>
+                </div>
+
+                <div class="items-list" id="itemsList">
+                    <!-- Les articles seront ajoutés ici dynamiquement -->
+                </div>
+
+                <div class="detail-row">
+                    <strong>Total</strong>
+                    <strong id="orderTotal"></strong>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <a href="index.html" class="btn btn-primary">Retour à l'accueil</a>
+                <a href="ordinateurs.html" class="btn btn-secondary">Continuer vos achats</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour valider et afficher les détails de la commande
+        function displayOrderDetails() {
+            const order = JSON.parse(localStorage.getItem('lastOrder'));
+            if (!order) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const orderDetails = document.querySelector('.order-details');
+            orderDetails.innerHTML = `
+                <div class="order-info">
+                    <h3>Détails de la commande</h3>
+                    <p>Date: ${order.date}</p>
+                    <p>Moyen de paiement: ${order.paymentMethod}</p>
+                    <p>Total: ${order.total.toLocaleString()} FCFA</p>
+                </div>
+                <div class="order-items">
+                    <h3>Articles commandés</h3>
+                    ${order.items.map(item => `
+                        <div class="order-item">
+                            <img src="${item.image}" alt="${item.name}">
+                            <div class="item-details">
+                                <h4>${item.name}</h4>
+                                <p>Quantité: ${item.quantity}</p>
+                                <p>Prix unitaire: ${item.price.toLocaleString()} FCFA</p>
+                                ${item.type === 'ordinateur' ? `
+                                    <div class="specs">
+                                        <p>Processeur: ${item.specs.processor}</p>
+                                        <p>RAM: ${item.specs.ram}</p>
+                                        <p>Stockage: ${item.specs.storage}</p>
+                                        <p>GPU: ${item.specs.gpu}</p>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Initialiser la page
+        document.addEventListener('DOMContentLoaded', () => {
+            displayOrderDetails();
+        });
+    </script>
+</body>
+</html> 

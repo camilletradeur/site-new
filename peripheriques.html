@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Périphériques - Camille-Tech</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(to right, #1a237e, #1565c0);
+            color: white;
+            padding: 0.4rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .cart-icon {
+            position: relative;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+        }
+
+        .cart-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        #cart-count {
+            background: #ff4081;
+            color: white;
+            border-radius: 50%;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.8rem;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            min-width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .filters {
+            background: white;
+            padding: 1rem;
+            margin: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .filter-group {
+            margin-bottom: 1rem;
+        }
+
+        .filter-group h3 {
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .price-range {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .price-slider {
+            flex: 1;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .product-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+
+        .product-info {
+            padding: 1rem;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .product-specs {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .product-price {
+            font-size: 1.2rem;
+            color: #1565c0;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stock-status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .in-stock {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .low-stock {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .out-of-stock {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 0.5rem;
+            background: #1565c0;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background: #1976d2;
+            transform: translateY(-2px);
+        }
+
+        .add-to-cart:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Ajout du style pour le bouton de navigation vers les ordinateurs */
+        .section-nav-button {
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            background: linear-gradient(to right, #1a237e, #1565c0);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            font-weight: 500;
+        }
+
+        .section-nav-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to right, #1565c0, #1a237e);
+        }
+
+        .section-nav-button .icon {
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .section-nav-button {
+                right: 20px;
+                bottom: 20px;
+                padding: 12px 20px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="header-title">Périphériques</h1>
+        <a href="panier.html" class="cart-icon">
+            🛒 <span id="cart-count">0</span>
+        </a>
+    </header>
+
+    <div class="filters">
+        <div class="filter-group">
+            <h3>Prix</h3>
+            <div class="price-range">
+                <input type="range" min="1000" max="500000" class="price-slider" id="price-filter">
+                <span id="price-value">250 000 FCFA</span>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <h3>Catégories</h3>
+            <div class="checkbox-group">
+                <label><input type="checkbox" checked> Souris</label>
+                <label><input type="checkbox" checked> Claviers</label>
+                <label><input type="checkbox" checked> Écrans</label>
+                <label><input type="checkbox" checked> Casques</label>
+                <label><input type="checkbox" checked> Webcams</label>
+                <label><input type="checkbox" checked> Imprimantes</label>
+                <label><input type="checkbox" checked> Scanners</label>
+                <label><input type="checkbox" checked> Haut-parleurs</label>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <h3>Marques</h3>
+            <div class="checkbox-group">
+                <label><input type="checkbox" checked> Logitech</label>
+                <label><input type="checkbox" checked> Razer</label>
+                <label><input type="checkbox" checked> Corsair</label>
+                <label><input type="checkbox" checked> SteelSeries</label>
+                <label><input type="checkbox" checked> HP</label>
+                <label><input type="checkbox" checked> Canon</label>
+                <label><input type="checkbox" checked> Epson</label>
+                <label><input type="checkbox" checked> Dell</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="products-grid" id="products-container">
+        <!-- Les produits seront ajoutés ici dynamiquement -->
+    </div>
+
+    <!-- Ajout du bouton de navigation vers les ordinateurs -->
+    <a href="ordinateurs.html" class="section-nav-button">
+        <span class="icon">💻</span>
+        Voir les Ordinateurs
+    </a>
+
+    <script>
+        const peripheralTypes = {
+            'Souris': {
+                specs: ['DPI ajustable', 'Sans fil/Filaire', 'Ergonomique/Gaming'],
+                priceRange: [5000, 50000],
+                images: [
+                    'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46',
+                    'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7',
+                    'https://images.unsplash.com/photo-1625723044792-44de16ccb4e9'
+                ]
+            },
+            'Clavier': {
+                specs: ['Mécanique/Membrane', 'RGB/Standard', 'Layout'],
+                priceRange: [8000, 80000],
+                images: [
+                    'https://images.unsplash.com/photo-1587829741301-dc798b83add3',
+                    'https://images.unsplash.com/photo-1595225476474-87563907a212',
+                    'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef'
+                ]
+            },
+            'Écran': {
+                specs: ['Résolution', 'Taux de rafraîchissement', 'Taille'],
+                priceRange: [50000, 500000],
+                images: [
+                    'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf',
+                    'https://images.unsplash.com/photo-1585792180666-f7347c490ee2',
+                    'https://images.unsplash.com/photo-1591370874773-6702e8f12fd8'
+                ]
+            },
+            'Casque': {
+                specs: ['Son surround', 'Micro intégré', 'Sans fil/Filaire'],
+                priceRange: [10000, 100000],
+                images: [
+                    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e',
+                    'https://images.unsplash.com/photo-1583394838336-acd977736f90',
+                    'https://images.unsplash.com/photo-1546435770-a3e426bf472b'
+                ]
+            }
+        };
+
+        const brands = ['Logitech', 'Razer', 'Corsair', 'SteelSeries', 'HP', 'Canon', 'Epson', 'Dell'];
+
+        function generateRandomProduct(index) {
+            const types = Object.keys(peripheralTypes);
+            const type = types[Math.floor(Math.random() * types.length)];
+            const typeInfo = peripheralTypes[type];
+            const brand = brands[Math.floor(Math.random() * brands.length)];
+            
+            const price = Math.floor(Math.random() * (typeInfo.priceRange[1] - typeInfo.priceRange[0])) + typeInfo.priceRange[0];
+            const specs = typeInfo.specs.map(spec => {
+                const options = ['Premium', 'Standard', 'Pro', 'Gaming'];
+                return `${spec}: ${options[Math.floor(Math.random() * options.length)]}`;
+            });
+
+            const stockStatus = Math.random();
+            let status, statusClass;
+            if (stockStatus > 0.7) {
+                status = "En stock";
+                statusClass = "in-stock";
+            } else if (stockStatus > 0.4) {
+                status = "Stock limité";
+                statusClass = "low-stock";
+            } else {
+                status = "Rupture de stock";
+                statusClass = "out-of-stock";
+            }
+
+            const imageUrl = typeInfo.images[Math.floor(Math.random() * typeInfo.images.length)];
+
+            return {
+                name: `${brand} ${type} ${['Pro', 'Gaming', 'Ultimate', 'Elite'][Math.floor(Math.random() * 4)]}`,
+                price: price,
+                specs: specs,
+                status: status,
+                statusClass: statusClass,
+                image: imageUrl
+            };
+        }
+
+        function createProductCard(product, index) {
+            return `
+                <div class="product-card">
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <div class="product-specs">
+                            ${product.specs.join('<br>')}
+                        </div>
+                        <div class="product-price">${product.price.toLocaleString()} FCFA</div>
+                        <span class="stock-status ${product.statusClass}">${product.status}</span>
+                        <button class="add-to-cart" onclick="addToCart(${index})">
+                            Ajouter au panier
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function addToCart(productId) {
+            // Récupérer le panier existant ou créer un nouveau
+            let cart = JSON.parse(localStorage.getItem('camille_tech_cart')) || [];
+            
+            // Trouver le produit dans la liste des périphériques
+            const cards = document.querySelectorAll('.product-card');
+            const productCard = Array.from(cards).find(card => card.querySelector('.add-to-cart').getAttribute('onclick') === `addToCart(${productId})`);
+            
+            if (productCard) {
+                const name = productCard.querySelector('.product-name').textContent;
+                const price = parseInt(productCard.querySelector('.product-price').textContent.replace(/[^\d]/g, ''));
+                const image = productCard.querySelector('.product-image').src;
+                const specs = productCard.querySelector('.product-specs').innerHTML.split('<br>').map(spec => spec.trim());
+                const status = productCard.querySelector('.stock-status').textContent;
+
+                // Vérifier si le produit est déjà dans le panier
+                const existingItem = cart.find(item => item.id === productId);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({
+                        id: productId,
+                        name,
+                        price,
+                        image,
+                        specs,
+                        type: 'peripherique',
+                        quantity: 1,
+                        status: status
+                    });
+                }
+
+                // Sauvegarder le panier
+                localStorage.setItem('camille_tech_cart', JSON.stringify(cart));
+
+                // Mettre à jour le compteur
+                const cartCount = document.getElementById('cart-count');
+                cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+                // Animation de confirmation
+                cartCount.style.animation = 'none';
+                cartCount.offsetHeight; // Forcer le reflow
+                cartCount.style.animation = 'pulse 0.5s ease-out';
+
+                // Effet visuel sur le bouton
+                const button = productCard.querySelector('.add-to-cart');
+                button.style.backgroundColor = '#2e7d32';
+                button.textContent = 'Ajouté au panier !';
+                setTimeout(() => {
+                    button.style.backgroundColor = '#1565c0';
+                    button.textContent = 'Ajouter au panier';
+                }, 1000);
+            }
+        }
+
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('camille_tech_cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').textContent = totalItems;
+        }
+
+        // Initialisation du compteur au chargement de la page
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartCount();
+            // ... rest of the initialization code ...
+        });
+
+        // Fonction pour filtrer les produits
+        function filterProducts() {
+            const priceLimit = parseInt(document.getElementById('price-filter').value);
+            const cards = document.querySelectorAll('.product-card');
+            
+            cards.forEach(card => {
+                const price = parseInt(card.querySelector('.product-price').textContent.replace(/[^\d]/g, ''));
+                if (price <= priceLimit) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Ajouter l'écouteur d'événement pour le filtre de prix
+        document.getElementById('price-filter').addEventListener('input', filterProducts);
+
+        // Fonction pour filtrer par catégorie
+        function filterByCategory(checkbox) {
+            const category = checkbox.parentElement.textContent.trim().toLowerCase();
+            const cards = document.querySelectorAll('.product-card');
+            
+            cards.forEach(card => {
+                const productName = card.querySelector('.product-name').textContent.toLowerCase();
+                if (!checkbox.checked && productName.includes(category)) {
+                    card.style.display = 'none';
+                } else {
+                    card.style.display = 'block';
+                }
+            });
+        }
+
+        // Ajouter les écouteurs d'événements pour les filtres de catégorie
+        document.querySelectorAll('.checkbox-group input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', () => filterByCategory(checkbox));
+        });
+
+        function handleScroll() {
+            const cards = document.querySelectorAll('.product-card:not(.visible)');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                if (rect.top <= window.innerHeight * 0.9) {
+                    card.classList.add('visible');
+                }
+            });
+        }
+
+        // Génération des produits
+        const container = document.getElementById('products-container');
+        for (let i = 0; i < 200; i++) {
+            const product = generateRandomProduct(i);
+            container.innerHTML += createProductCard(product, i);
+        }
+
+        // Gestion du défilement
+        window.addEventListener('scroll', handleScroll);
+        handleScroll();
+
+        // Gestion du filtre de prix
+        const priceSlider = document.getElementById('price-filter');
+        const priceValue = document.getElementById('price-value');
+        priceSlider.addEventListener('input', (e) => {
+            const value = e.target.value;
+            priceValue.textContent = `${parseInt(value).toLocaleString()} FCFA`;
+        });
+    </script>
+</body>
+</html> 
